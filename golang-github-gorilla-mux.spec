@@ -1,21 +1,17 @@
 %global debug_package   %{nil}
 %global import_path     github.com/gorilla/mux
 %global gopath          %{_datadir}/gocode
-%global commit          e718e932ee606838744df844eb75064959eb74bc
+%global commit          136d54f81f00414c45c3c68dd47e98cc97519c5e
 %global shortcommit     %(c=%{commit}; echo ${c:0:7})
 
 Name:           golang-github-gorilla-mux
 Version:        0
-Release:        0.11.git%{shortcommit}%{?dist}
+Release:        0.16.git%{shortcommit}%{?dist}
 Summary:        A powerful URL router and dispatcher for golang
 License:        BSD
 URL:            http://www.gorillatoolkit.org/pkg/mux
 Source0:        https://github.com/gorilla/mux/archive/%{commit}/mux-%{shortcommit}.tar.gz
-%if 0%{?fedora} >= 19 || 0%{?rhel} >= 7
 BuildArch:      noarch
-%else
-ExclusiveArch:  %{ix86} x86_64 %{arm}
-%endif
 
 %description
 Package gorilla/mux implements a request router and dispatcher.
@@ -54,16 +50,31 @@ cp -av *.go %{buildroot}/%{gopath}/src/%{import_path}
 
 
 %files devel
-%defattr(-,root,root,-)
 %doc LICENSE README.md
-%dir %attr(755,root,root) %{gopath}
-%dir %attr(755,root,root) %{gopath}/src
-%dir %attr(755,root,root) %{gopath}/src/github.com
-%dir %attr(755,root,root) %{gopath}/src/github.com/gorilla
-%dir %attr(755,root,root) %{gopath}/src/github.com/gorilla/mux
+%dir %{gopath}/src/github.com/gorilla
+%dir %{gopath}/src/github.com/gorilla/mux
 %{gopath}/src/%{import_path}/*.go
 
 %changelog
+* Tue Jan 27 2015 jchaloup <jchaloup@redhat.com> - 0-0.16.git136d54f
+- bump the release
+  related: #1147843
+
+* Thu Jul 31 2014 Lokesh Mandvekar <lsm5@fedoraproject.org> - 0-0.15.git
+- do not own dirs owned by golang
+- archfulness and defattr for el6 handled separately
+
+* Wed Jun 18 2014 Lokesh Mandvekar <lsm5@fedoraproject.org> 0-0.12.git
+- Resolves: rhbz#1108720 - update for docker 1.0.0
+- Resolves: rhbz#1110512 - restrict arch to x86_64
+
+* Sat May 31 2014 Lokesh Mandvekar <lsm5@redhat.com> 0-0.13.git
+- update to commit 136d54f81f (required for docker 1.0
+https://github.com/dotcloud/docker/issues/5908 )
+
+* Fri Jan 17 2014 Lokesh Mandvekar <lsm5@redhat.com> 0-0.12.gite718e93
+- add check
+
 * Fri Jan 17 2014 Lokesh Mandvekar <lsm5@redhat.com> 0-0.11.gite718e93
 - revert golang >= 1.2 version requirement
 
